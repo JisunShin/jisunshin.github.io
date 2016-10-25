@@ -5,9 +5,9 @@ categories: CI
 ---
 
 # 환경
-1. Jenkins 2.19.1
-2. Deploy to container Plugin 1.10
-3. tomcat 8.5.6 (Windows64bit)
+* Jenkins 2.19.1
+* Deploy to container Plugin 1.10
+* tomcat 8.5.6 (Windows64bit)
 
 # 설정
 
@@ -20,7 +20,8 @@ categories: CI
 
 
 ## Tomcat
-1. conf/tomcat-users.xml 에 manager App 사용자를 추가한다
+1. conf/tomcat-users.xml 에 manager App 사용자를 추가한다 
+
     {% highlight xml %}
         <tomcat-users>
             <user username="tomcat" password="비밀번호" roles="manager-gui"/>
