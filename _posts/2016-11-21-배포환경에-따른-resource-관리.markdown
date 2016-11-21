@@ -54,7 +54,7 @@ pom.xml에 아래와 같이  각 환경에 맞게 profile을 추가한다.
  각 환경별로 달라져야할 설정파일 (예, DB접속 URL,  log4j.xml, 각종 property등) 을 $project_home/src/main/resouces-$env 폴더밑에 동일한 구조로 copy 후 내용을 수정한다.
  
  
- #### maven build 시 resource copy plugin 추가
+#### maven build 시 resource copy plugin 추가
  profile의 <env> 를 이용해서 해당 directory내의 파일을 target/classes/로 overwrite 하도록 plugin을 설정한다.
      {% highlight xml %}
         	<build>
@@ -87,7 +87,7 @@ pom.xml에 아래와 같이  각 환경에 맞게 profile을 추가한다.
      {% endhighlight %}
  
  
- #### maven build 시 -P 옵션 추가
+#### maven build 시 -P 옵션 추가
 'maven install -Pdev'  와 같이 build한다. -P 옵션을 주지않으면 default 환경으로 build한다.
  
 
