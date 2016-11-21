@@ -1,0 +1,90 @@
+---
+layout: post
+title:  "배포환경에 따른 resource 관리"
+categories: maven jenkins
+---
+개발, 테스트, 운영등 배포 환경에 따라 설정이나 resource 가 달라져야 할때는 maven의 profile을 이용해서 
+각 환경별 설정파일을 생성하고 maven build시 해당 환경에 맞는 resource로 overwrite한다.
+
+# 환경
+* maven
+* spring
+
+#### maven profile 추가
+pom.xml에 아래와 같이  각 환경에 맞게 profile을 추가한다. 
+여기서는 local/dev/test/prd 의 4개 profile을 추가했고 local 이 default
+    {% highlight xml %}
+        	
+	<profiles>
+        <profile>
+            <id>local</id>
+            <properties>
+                <env/>
+            </properties>
+            <activation>
+            	<activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <env>dev</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <env>test</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>prd</id>
+            <properties>
+                <env>prd</env>
+            </properties>
+        </profile>
+	</profiles>
+    {% endhighlight %}
+
+#### resource 파일 관리를 위한 diretory 생성 및 설정파일 copy
+ 원래 resouce directory는 $project_home/src/main/resources 이므로 $project_home/src/main/resouces-dev, $project_home/src/main/resouces-test, $project_home/src/main/resouces-prd 폴더를 생성한다.
+ 
+ 각 환경별로 달라져야할 설정파일 (예, DB접속 URL,  log4j.xml, 각종 property등) 을 $project_home/src/main/resouces-$env 폴더밑에 동일한 구조로 copy 후 내용을 수정한다.
+  
+ #### maven build 시 resource copy plugin 추가
+ profile의 <env> 를 이용해서 해당 directory내의 파일을 target/classes/로 overwrite 하도록 plugin을 설정한다.
+     {% highlight xml %}
+        	<build>
+			....
+ 		<plugins>
+			 <plugin>
+		        <artifactId>maven-resources-plugin</artifactId>
+		        <version>3.0.1</version>
+		        <executions>
+		          <execution>
+		            <id>copy-resources</id>
+		            <phase>process-resources</phase>
+		            <goals>
+		              <goal>copy-resources</goal>
+		            </goals>
+		            <configuration>
+		              <outputDirectory>${basedir}/target/classes</outputDirectory>
+		              <overwrite>true</overwrite>
+		              <resources>          
+		                  <resource>
+			                <directory>src/main/resources-${env}</directory>
+			                <filtering>false</filtering>
+		                </resource>
+		              </resources>              
+		            </configuration>            
+		          </execution>
+		        </executions>
+		      </plugin>
+			  ...
+     {% endhighlight %}
+ 
+ #### maven build 시 -P 옵션 추가
+'maven install -Pdev'  와 같이 build한다. -P 옵션을 주지않으면 default 환경으로 build한다.
+ 
+
+	 
