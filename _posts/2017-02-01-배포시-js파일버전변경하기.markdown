@@ -1,0 +1,88 @@
+---
+layout: post
+title:  "배포시  js파일 버전 변경하기"
+categories: maven jenkins
+---
+js파일은 내용이 변경되더라도 사용자 브라우저에서 cache를 사용하고 신규파일을 읽어오지 않는 경우가 있다.
+이를위해  js 파일 include 시 배포버전을 포함하도록 하여 신규 배포가 되었을 때 사용자의  cache를  강제로 clear 한다.
+단, 원본파일을 변경하지 않고  package 실행시 target 소스만 변경되도록 하기위해  'prepare-package' phase에서  'exploded'  를 실행하여 미리  target 소스를 생성한후, 문자열 replace,  war 파일 생성의 순서로 진행한다.
+
+
+# 환경
+* maven
+* maven-replacer-plugin 1.5.3
+
+####  pom.xml
+1.  war  plugin에  exploded execution 설정을 추가한다.
+2.  war plugin 에  war  goal 에 'warSouceDeirecoty' 항목을 taret directory로 별도 지정해야한다. 그렇지 않으면 기본 source폴더에서 다시 가져와서 엎어친다.
+3. maven-replacer-plugin 설정을 추가한다.
+
+    {% highlight xml %}
+<build>        	
+	<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				 <version>2.6</version>
+				<executions>
+			        <execution>			       
+			            <id>prepare-war</id>
+			            <phase>prepare-package</phase>
+			            <goals>
+			                <goal>exploded</goal>
+			            </goals>
+			        </execution>
+			        
+			        <execution>
+		            <id>default-war</id>
+		            <phase>package</phase>
+		            <goals>
+		                <goal>war</goal>
+		            </goals>
+		            <configuration>
+		                <warSourceDirectory>${project.build.directory}/${project.build.finalName}</warSourceDirectory>
+		            </configuration>
+		        </execution>
+			    </executions>
+			</plugin>
+			
+			<plugin>
+			    <groupId>com.google.code.maven-replacer-plugin</groupId>
+			    <artifactId>replacer</artifactId>
+			    <version>1.5.3</version>
+			    <executions>
+			        <execution>
+			            <phase>prepare-package</phase>
+			            <goals>
+			                <goal>replace</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			    <configuration>
+			        <includes>
+			            <include>${project.build.directory}/${project.build.finalName}/WEB-INF/tiles/header.jsp</include>
+			            <include>${project.build.directory}/${project.build.finalName}/jsp/analysis/currentStatus.jsp</include>
+			          </includes>
+			        <replacements>
+			            <replacement>
+			                <token>@buildtimestamp@</token>
+			                <value>${buildtimestamp}</value>
+			            </replacement>
+			        </replacements>
+			    </configuration>
+			</plugin>
+			...
+			</build>
+    {% endhighlight %}
+	
+#### js파일을 include 하고 있는 파일
+js파일을 include 할때 Query String을 아래와 같이 포함해서 배포시에 replace 되도록 한다.
+{% highlight html %}
+	<script src="/js/common.js?v=@buildtimestamp@"></script>
+{% endhighlight %}
+  
+#### 배포결과
+{% highlight html %}
+...
+	<script src="/js/common.js?v=20170201061416"></script>
+...
+{% endhighlight %}	 

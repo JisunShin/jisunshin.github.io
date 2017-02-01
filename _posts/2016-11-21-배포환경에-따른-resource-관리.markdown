@@ -86,9 +86,7 @@ pom.xml에 아래와 같이  각 환경에 맞게 profile을 추가한다.
 			  ...
      {% endhighlight %}
  
- 
-#### maven build 시 -P 옵션 추가
+ #### maven build 시 -P 옵션 추가
 'maven install -Pdev'  와 같이 build한다. -P 옵션을 주지않으면 default 환경으로 build한다.
- 
 
 	 
