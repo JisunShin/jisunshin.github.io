@@ -32,11 +32,9 @@ minEvictableIdleTimeMillis 이상 idle 상태인 connection 을 close 처리함
 {% endhighlight %}
 	
 #### evictor 실행여부 확인 
-js파일을 include 할때 Query String을 아래와 같이 포함해서 배포시에 replace 되도록 한다.
 {% highlight text %}
 [ INFO][2017-02-01 16:19:26,863][Slf4jSpyLogDelegator: 373] SELECT 1 FROM DUAL
  {executed in 6 msec}
 
 {% endhighlight %}
   
-#### 배포결과
