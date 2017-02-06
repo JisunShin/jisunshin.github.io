@@ -9,7 +9,7 @@ jmeter를 이용해서 application의 성능테스트를 수행한다.
 
 # 환경
 * jmeter 3.1
-*  Java 7 +
+* Java 7 +
 
 ####  실행
 1. jmeter 압축을 푼다. C:\works\jmeter
@@ -53,7 +53,6 @@ Host: www.naver.com
 User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_111)
 {% endhighlight%}
 	
-
 
 [jemeter 공식]: http://jmeter.apache.org/
 [1]: {{ site.url }}/download/jmeter_http_request_sample1.jmx
