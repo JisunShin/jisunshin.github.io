@@ -4,6 +4,7 @@ title:  "jemeter를 이용한 성능테스트"
 categories: jmeter
 ---
 jmeter를 이용해서 application의 성능테스트를 수행한다.
+[Jmeter  공식페이지][jemeter 공식] 를 참조한다.
 
 
 
@@ -18,16 +19,17 @@ jmeter를 이용해서 application의 성능테스트를 수행한다.
 4. 'Start'버튼 클릭
 
 #### HTTP 테스트 설정
-설정파일은 [여기][1]에서 다운로드한다
 1. Test Plan > Thread Group을 기본적으로 추가한다.
 2. Thread Group 하위에  Add > Sampler메뉴에서 'HTTP Request'를 선택하여 추가한다.
 	* Timeouts - connet, Response :  설정안해도 된다. 설정을 하게 되면 해당시간이후 오류로 count된다.
 3.  HTTP Request 하위에 결과를 추적하기 위해 Listener를 추가한다.
 	* View Results Tree : 건별로 실행결과, Request, Reponse를 모두 볼수 있다
 	* Summary Report : Test 회차의 요약정보생성, 실행횟수, 최소값, 최대값, 평균값 등
+4. 설정파일은 [여기][1]에서 다운로드한다.
 
 ####  Header에 Random  변수 추가하기
 HTTP Request 요청시마다 header에 random 변수를 추가하려고 한다.
+
 1. Thread Group > Random Variable 추가
 	* variable Name : 다른설정에서 참초하려는 이름 예) logisticsCd
 	* Minimum, Maximum Value : 필수설정해야 정상작동함
