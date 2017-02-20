@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "jasypt-1 을 이용한  property 암호화"
+title:  "jasypt 을 이용한  property 암호화"
 categories: spring  암호화
 ---
 property 파일에  저장된  DB암호 등을 평문으로 노출하지 않고 암호화하여 저장, 사용시 복호화 하기위한 기능
@@ -116,6 +116,10 @@ password: PASS_KEY_AAAA
 암호화하고 싶은 문장
 {% endhighlight %}
 
-2. [jasypt  공식 - spring 3연동] [jasypt  공식 - spring 3]사이트 참조
+2. [jasypt  공식 - spring 3연동] (http://www.jasypt.org/spring3.html)사이트 참조
 
-[jasypt  공식 - spring 3] : http://www.jasypt.org/spring3.html
+
+
+
+
+
