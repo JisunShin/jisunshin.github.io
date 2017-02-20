@@ -1,0 +1,120 @@
+---
+layout: post
+title:  "jasypt-1 을 이용한  property 암호화"
+categories: spring  암호화
+---
+property 파일에  저장된  DB암호 등을 평문으로 노출하지 않고 암호화하여 저장, 사용시 복호화 하기위한 기능
+
+# 환경
+spring-mvc
+jasypt-1.9.2
+
+
+#### jasypt dependency 추가
+{% highlight xml %}
+<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt-spring31</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+{% endhighlight %}
+
+#### spring context 설정파일에서 configurer 사용하는 부분 변경
+{% highlight xml %}
+<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath*:path to properties</value>
+			</list>
+		</property>
+	</bean>
+{% endhighlight %}
+	=> 
+	{% highlight xml %}
+	<bean id="encryptorConfig" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+	    <property name="algorithm" value="PBEWithMD5AndDES" />
+	    <property name="password" value="PASS_KEY_AAAA" />
+	</bean>
+	 
+	<bean id="encryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+	    <property name="config" ref="encryptorConfig" />
+	</bean>
+	 
+	<bean id="propertyConfigurer" class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
+	    <constructor-arg ref="encryptor" />
+	    <property name="locations">
+	        <list>
+	            <value>classpath*:spring/jdbc.properties</value>
+	        </list>
+	    </property>
+	</bean>
+	....
+		<property name="url" value="${jdbc.url}" /> 
+		<property name="username" value="${jdbc.username}" /> 
+		<property name="password" value="${jdbc.password}" /> 
+{% endhighlight %}
+
+####  property 파일에  저장할 암호화문을 만든다 
+1.  local 에 jasypt 의 압축을 푼다.
+2. command  line으로 암호문을 생성한다.
+    이때 spring  설정파일에서 지정한 algorithm, password가 일치하여야한다.
+{% highlight cmd %}
+cd C:\works\jasypt-1.9.2\bin
+encrypt input="암호화하고 싶은 문장" algorithm=PBEWITHMD5ANDDES password=PASS_KEY_AAAA
+
+----ENVIRONMENT-----------------
+
+Runtime: Oracle Corporation Java HotSpot(TM) 64-Bit Server VM 25.111-b14
+
+
+
+----ARGUMENTS-------------------
+
+algorithm: PBEWITHMD5ANDDES
+input: 암호화하고 싶은 문장
+password: PASS_KEY_AAAA
+
+
+
+----OUTPUT----------------------
+
+v03zIliFaZCRp9/bVpke5uwuFWSahMhx6BymZ1Db8nGkciP1+WShfA==
+
+{% endhighlight %}
+3. property 파일에 해당부분을 암호문으로 변경한다.
+{% highlight property %}
+jdbc.username=DB_USER
+jdbc.password=ENC(v03zIliFaZCRp9/bVpke5uwuFWSahMhx6BymZ1Db8nGkciP1+WShfA==)
+{% endhighlight %}
+
+
+#### 참고
+1. command line Decrypt
+
+{% highlight cmd %}
+decrypt input="v03zIliFaZCRp9/bVpke5uwuFWSahMhx6BymZ1Db8nGkciP1+WShfA==" algorithm=PBEWITHMD5ANDDES password=PASS_KEY_AAAA
+
+
+----ENVIRONMENT-----------------
+
+Runtime: Oracle Corporation Java HotSpot(TM) 64-Bit Server VM 25.111-b14
+
+
+
+----ARGUMENTS-------------------
+
+algorithm: PBEWITHMD5ANDDES
+input: v03zIliFaZCRp9/bVpke5uwuFWSahMhx6BymZ1Db8nGkciP1+WShfA==
+password: PASS_KEY_AAAA
+
+
+
+----OUTPUT----------------------
+
+암호화하고 싶은 문장
+{% endhighlight %}
+
+2. [jasypt  공식 - spring 3연동] 사이트 참조
+
+[jasypt  공식 - spring 3연동] : http://www.jasypt.org/spring3.html
