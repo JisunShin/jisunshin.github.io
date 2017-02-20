@@ -116,7 +116,7 @@ password: PASS_KEY_AAAA
 암호화하고 싶은 문장
 {% endhighlight %}
 
-2. [jasypt  공식 - spring 3연동] (http://www.jasypt.org/spring3.html)사이트 참조
+2.  [jasypt  공식 - spring 3연동](http://www.jasypt.org/spring3.html)사이트 참조
 
 
 
