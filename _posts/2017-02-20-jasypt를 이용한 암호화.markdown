@@ -56,6 +56,30 @@ property 파일에  저장된  DB암호 등을 평문으로 노출하지 않고 
 		<property name="password" value="${jdbc.password}" /> 
 {% endhighlight %}
 
+#### xml파일에 password가 직접 입력되는 것을 피하기 위해 환경변수나 system property를 이용할 수 있다.
+1. 환경변수
+password  -> passwordEnvName 으로 변경하고 환경변수명을 적어준다.  
+환경변수에 실제 password를 추가한다.
+{% highlight cmd %}
+export ENV_PASS="PASS_KEY_AAAA"
+{% endhighlight %}
+{% highlight xml %}
+	<bean id="encryptorConfig" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+	    <property name="algorithm" value="PBEWithMD5AndDES" />
+	    <property name="passwordEnvName" value="ENV_PASS" />
+	</bean>
+	 {% endhighlight %}
+
+2. system property
+java 옵션으로 다음 추가  
+-DENV_PASS="PASS_KEY_AAAA"
+
+{% highlight xml %}
+	<bean id="encryptorConfig" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+	    <property name="algorithm" value="PBEWithMD5AndDES" />
+	    <property name="passwordSysPropertyName" value="ENV_PASS" />
+	</bean>
+	 {% endhighlight %}
 
 ####  property 파일에  저장할 암호화문을 만든다 
 1.  local 에 jasypt 의 압축을 푼다.
