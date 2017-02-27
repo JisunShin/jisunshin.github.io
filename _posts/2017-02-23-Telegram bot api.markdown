@@ -12,7 +12,7 @@ Telegrame  알림   :  카카오톡 플러스  친구톡
 야간발송제한없음 : 야간발송제한없음
 비용없음 : 사업자만 사용가능. 비용발생
 
-카카오톡 친구톡 참고 [페이지 이동]:(https://bizmessage.kakao.com/)
+카카오톡 친구톡 참고 [페이지 이동](https://bizmessage.kakao.com/)
 
 #### Telegram BOT 만들기
 @BotFather  는  telegram bot을 만들어주는 bot이다.
@@ -27,8 +27,9 @@ telegram에서 연락처 ' @BotFather' 로 검색해서 채팅창을 만들다
      예) 1324251:AHWdfokjskWsi23kWbxlijdflkAIWKDJfok9
 3. Bot 정보조회
 URL을 조회하면 생성된 Bot의 ID등 정보를 조회할  수있다.
-> https://api.telegram.org/bot<token>/getMe
-
+{% highlight plaintext %}
+ https://api.telegram.org/bot<token>/getMe
+{% endhighlight %}
 
 #### Telegram BOT 이용해서 메시지보내기
 채널을 생성한 후 그 채널에 메시지를 보낸다
@@ -41,18 +42,25 @@ telegram  채팅방 > 새채널 을 선택한다.
 
 2. 채널ID 알아내기
 채널의  ID를 알기위해  채널정보를 조회한다. 단, 채널속성이 비공개인 경우에는 정보가 표시되지 않는다.
->  https://api.telegram.org/bot<token>/getChat?chat_id=@MyTestChannel
-
+{% highlight plaintext %}
+  https://api.telegram.org/bot<token>/getChat?chat_id=@MyTestChannel
+{% endhighlight %}
 
 * 비공개채널의 채널ID 알아내기
 	* telegram 채널채팅창에서 테스트용 메시지를 보낸다.
 	 * Bot의 수신메시지를 조회한다.
-> 	    {"ok":true,"result":[{"update_id":931155568, "channel_post":{"message_id":4,"chat":{"id":-100160445321521,"title":"eCrossTest","type":"channel"},"date":1488162346,"text":"\uc548\ub155\ud558\uc138\uc694"}}]}
+	 {% highlight plaintext %}
+	    {"ok":true,"result":[{"update_id":931155568, "channel_post":{"message_id":4,"chat":{"id":-100160445321521,"title":"eCrossTest","type":"channel"},"date":1488162346,"text":"\uc548\ub155\ud558\uc138\uc694"}}]}
+		{% endhighlight %}
       * chatid : 예) -100160445321521
 
 3. 해당 채팅창에 메시지 보내기
->  https://api.telegram.org/bot<token>/sendMessage?chat_id=<chatId>&text=메시지를보냅니다
->  {"ok":true,"result":{"message_id":5,"chat":{"id":<chatId>,"title":"eCrossTest","type":"channel"},"date":1488162612,"text":"\uba54\uc2dc\uc9c0\ub97c\ubcf4\ub0c5\ub2c8\ub2e4"}}
+{% highlight plaintext %}
+  https://api.telegram.org/bot<token>/sendMessage?chat_id=<chatId>&text=메시지를보냅니다
+  {"ok":true,"result":{"message_id":5,"chat":{"id":<chatId>,"title":"eCrossTest","type":"channel"},"date":1488162612,"text":"\uba54\uc2dc\uc9c0\ub97c\ubcf4\ub0c5\ub2c8\ub2e4"}}
+{% endhighlight %}
 
 * 해당채널에 관리자로 추가되지 않은경우 오류메시지
->  {"ok":false,"error_code":403,"description":"Forbidden: bot is not a member of the channel chat"}
+{% highlight plaintext %}
+ {"ok":false,"error_code":403,"description":"Forbidden: bot is not a member of the channel chat"}
+{% endhighlight %}
