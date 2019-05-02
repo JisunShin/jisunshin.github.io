@@ -10,13 +10,12 @@ Cache-Control: max-age=31536000‬
 * ETAG를 이용할수 도 있음
 
 그래서 Cache 를 사용하도록 하면 실제로 내용이 변경되었을때도 사용자 브라우저에서 cache를 사용하고 변경된 파일을 읽어오지 않는 경우가 있다.
-이 문제를 해결하기 위한 방법을 spring에서 제공한다. Resource 별로 versionging기능을 제공한다.
+이 문제를 해결하기 위한 방법을 spring에서 제공한다. Static Resource의 versioning기능을 제공한다.
 
 1. ResourceHandlerRegistry 세팅
    * cache-control 세팅
    * Contents에 따라 Version을 생성
    * http://localhost:8080/resource/foo.js -> http://localhost:8080/resource/foo-46944c7e3a9bd20cc30fdc085cae46f2.js
-
 
 2. JSP 파일내에서 URL이 변경되도록한다.
    * ResourceUrlEncodingFilter 를 등록한다. (위 소스 참조)
@@ -24,10 +23,11 @@ Cache-Control: max-age=31536000‬
 
 {% highlight jsp %}
 <link href="<c:url value="/resources/myCss.css" />" rel="stylesheet">
-{% highlight jsp %}
+{% endhighlight  %}
 
 3. CSS파일내에서의 Link를 자동으로 변경
 
+### 소스참고
 {% highlight java %}
 @Configuration
 @EnableWebMvc
@@ -48,4 +48,4 @@ public class MvcConfig implements WebMvcConfigurer {
         return new ResourceUrlEncodingFilter();
     }
 }
-{% highlight java %}
+{% endhighlight %}
