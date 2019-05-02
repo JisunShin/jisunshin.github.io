@@ -9,7 +9,7 @@ tags: [공격, Public Key]
 
 # 예
 
-![Alice-Mallory-Bob](https://en.wikipedia.org/wiki/File:Man_in_the_middle_attack.svg)
+![Alice-Mallory-Bob](https://upload.wikimedia.org/wikipedia/commons/e/e7/Man_in_the_middle_attack.svg)
 Alice가 Bob에게 통신하려고 한다. 이때 Mallory가 이들의 대화에 끼어들어 엿듣고 Bob에게 잘못된 메시지를 전달하여 공격한다.
   1. Alice "Bob, Public key 줘" -> Mallory : Bob
   2. Alice : Malloy "나 Alice임. Public key 줘" ->  Bob
