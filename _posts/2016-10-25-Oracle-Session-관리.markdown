@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Oracle Session 관리용 Query"
-category: oracle
+categories: oracle
 ---
 
 #### Session 현황
