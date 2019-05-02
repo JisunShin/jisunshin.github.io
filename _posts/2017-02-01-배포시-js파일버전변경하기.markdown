@@ -1,9 +1,15 @@
 ---
 layout: post
 title:  "배포시  js파일 버전 변경하기"
-categories: maven jenkins
+category: 개발팁
+tags: [Static resource, Cache]
 ---
-js파일은 내용이 변경되더라도 사용자 브라우저에서 cache를 사용하고 신규파일을 읽어오지 않는 경우가 있다.
+js파일과 같은 static resource는 cache를 적용하는 것이 유리하다.
+Cache-Control: max-age=31536000‬
+
+* ETAG를 이용할수 도 있음
+
+그래서 Cache 를 사용하도록 하면 실제로 내용이 변경되었을때도 사용자 브라우저에서 cache를 사용하고 변경된 파일을 읽어오지 않는 경우가 있다.
 이를위해  js 파일 include 시 배포버전을 포함하도록 하여 신규 배포가 되었을 때 사용자의  cache를  강제로 clear 한다.
 단, 원본파일을 변경하지 않고  package 실행시 target 소스만 변경되도록 하기위해  'prepare-package' phase에서  'exploded'  를 실행하여 미리  target 소스를 생성한후, 문자열 replace,  war 파일 생성의 순서로 진행한다.
 
