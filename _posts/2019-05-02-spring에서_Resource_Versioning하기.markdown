@@ -24,10 +24,12 @@ Cache-Control: max-age=31536000‬
 3. CSS파일내에서의 Link를 자동으로 변경
 
 ### 소스참고
+
 {% highlight java %}
 @Configuration
 @EnableWebMvc
 public class MvcConfig implements WebMvcConfigurer {
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
@@ -45,7 +47,6 @@ public class MvcConfig implements WebMvcConfigurer {
     }
 }
 {% endhighlight %}
-
 
 {% highlight jsp %}
 <link href="<c:url value="/resources/myCss.css" />" rel="stylesheet">
