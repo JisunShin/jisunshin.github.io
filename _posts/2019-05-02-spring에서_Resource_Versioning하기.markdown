@@ -18,12 +18,8 @@ Cache-Control: max-age=31536000‬
    * http://localhost:8080/resource/foo.js -> http://localhost:8080/resource/foo-46944c7e3a9bd20cc30fdc085cae46f2.js
 
 2. JSP 파일내에서 URL이 변경되도록한다.
-   * ResourceUrlEncodingFilter 를 등록한다. (위 소스 참조)
-   * JSTL을 이용해서 URL Link가 version을 포함하도록 한다.
-
-{% highlight jsp %}
-<link href="<c:url value="/resources/myCss.css" />" rel="stylesheet">
-{% endhighlight  %}
+   * ResourceUrlEncodingFilter 를 등록한다.
+   * Static resource를 link 할때 JSTL을 이용해서 URL Link가 version을 포함하도록 한다.
 
 3. CSS파일내에서의 Link를 자동으로 변경
 
@@ -49,3 +45,8 @@ public class MvcConfig implements WebMvcConfigurer {
     }
 }
 {% endhighlight %}
+
+
+{% highlight jsp %}
+<link href="<c:url value="/resources/myCss.css" />" rel="stylesheet">
+{% endhighlight  %}
