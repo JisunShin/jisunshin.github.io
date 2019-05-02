@@ -2,7 +2,7 @@
 layout: post
 title:  "배포시  js파일 버전 변경하기"
 category: 개발팁
-tags: [Static resource, Cache]
+tags: [static, resource, cache, maven]
 ---
 js파일과 같은 static resource는 cache를 적용하는 것이 유리하다.
 Cache-Control: max-age=31536000‬
