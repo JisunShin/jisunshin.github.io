@@ -13,6 +13,9 @@
       </div>
     </main>
 
+    {% if site.tags != "" %}
+      {% include collecttags.html %}
+    {% endif %}
     {% include footer.html %}
 
   </body>
