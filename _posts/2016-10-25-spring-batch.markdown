@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "Spring Batch"
-categories: spring batch quartz
+category: spring
+tags: spring batch
 ---
 
 Spring-Batch Framework 기반 batch 실행 환경을 구성하고자 하였다. 
