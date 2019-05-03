@@ -1,5 +1,5 @@
 ---
 layout: tag
-title: "Tag: maven"
+title: "maven"
 tag: maven
 ---
