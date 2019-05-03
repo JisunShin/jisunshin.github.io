@@ -27,3 +27,16 @@ github_username:  JisunShin
 # Build settings
 markdown: kramdown
 theme: minima
+
+
+collections:
+  tags:
+    output: true
+    permalink: /tags/:path/
+    
+defaults:
+  - scope:
+      path: ''
+      type: tags
+    values:
+      layout: tag
