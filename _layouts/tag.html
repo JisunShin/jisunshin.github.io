@@ -1,24 +1,14 @@
 ---
-layout: page
+layout: default
 ---
-<div id="cover" class="container"
-    <div>
-        <h1>{{ page.title | default: page.name }}</h1>
-        <p>All Posts in <strong>{{ page.name }}</strong></p>
-    </div>
-</div>
-
-<ul class="posts-list">
-{% for post in site.posts %}
-    {% if post.tags contains page.name %}
-	<li>
-      <h3>
-        <a href="{{ site.baseurl }}{{ post.url }}">
-          {{ post.title }}
-        </a>
-        <small>{{ post.date | date_to_string }}</small>
-      </h3>
-    </li>                    
-    {% endif %}
+<div class="post">
+<h1>Tag: {{ page.tag }}</h1>
+<ul>
+{% for post in site.tags[page.tag] %}
+  <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> ({{ post.date | date_to_string }})<br>
+    {{ post.description }}
+  </li>
 {% endfor %}
 </ul>
+</div>
+<hr>
