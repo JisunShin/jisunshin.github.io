@@ -1,5 +1,5 @@
 ---
 layout: tag
-title: business
+title: "business"
 tag: business
 ---
