@@ -29,14 +29,14 @@ markdown: kramdown
 theme: minima
 
 
-collections:
-  tags:
-    output: true
-    permalink: /tags/:path/
+#collections:
+#  tags:
+#    output: true
+#    permalink: /tags/:path/
     
-defaults:
-  - scope:
-      path: ''
-      type: tags
-    values:
-      layout: tag
+#defaults:
+#  - scope:
+#      path: ''
+#      type: tags
+#    values:
+#      layout: tag
