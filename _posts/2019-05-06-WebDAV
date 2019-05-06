@@ -1,0 +1,31 @@
+---
+layout: post
+title:  "WebDAV"
+category: architecture
+tags: [web, http]
+---
+Web-based Distributed Authoring and Versioning 웹기반 분상현 저작 및 버전관리
+
+HTTP 의 확장 프로토콜로 웹서버에 저장된 파일을 편집하고 관리하는 사용자들 사이에 협업을 쉽게 만들어준다.
+
+RFC 4918, OSI 7Layer
+
+#####  특징
+
+* file locking : 동시성 제어.  여러명이 동시에 접근하여 overwrite하는 것을 막는다
+* 설정기반 : XML 프로퍼티 관리. 스토리지위치, 사용자 정보등 관리, 사용 쉬움
+* 네임스페이스 변경 : file system directory 와 유사한 collection 기능 제공,  복사, 이동 편리
+* 접근제어
+
+#####  지원하는 application
+
+* Apache mode_dev
+
+##### 추가된 method
+PROPFIND
+PROPPATCH
+MKCOL
+COPY
+MOVE
+LOCK
+UNLOCK
