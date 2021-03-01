@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "UTF-8 로 CSV 파일 저장하기"
-categories: web UTF-8 BOM
+categories: Util
+tags: [web, UTF-8,BOM, csv]
 ---
 WEB개발시 데이터를 CSV 파일로 다운로드 해야하는경우가 있다.  
 문제는 *.csv  형태로 다운로드받으면 사용자의 PC에서는 (대부분) Excel 이 자동실행된다.  이때  UTF-8 로 인코딩된 문자열을 엑셀에서 인식하지 못하면 한글들 다국어가 깨지게된다.  

@@ -1,0 +1,121 @@
+---
+layout: post
+title:  "Kerberos란"
+categories: Authentication
+tags: [security, kerberos, hadoop, SSO]
+---
+Kerberos는 Ticket 기반의 네트워크 인증 암호화 protocol이다.
+
+### 개요
+네트워크 노드간 비밀키를 사용해서 client/server 프로그램에 인증, 무결성을 제공한다(각 응용프로그램에서 kerberos를 지원해야한다. ftp, rsh, telnet, impala-shell).
+세션기반 SSO를 지원한다. kinit후 세션 만료 전까지 재인증없이 인증정보를 사용한다.
+
+Kerberos V5 프로토콜은 사실상 네트워크 보안을 위한 산업 표준이다. hadoop 클러스터 구성시 네트워크 환경은 필수이므로 이에 따라 kerberos가 적용되었다.
+
+
+### 용어
+ 
+ * KDC(Key Distribution Center) : 키 배포 센터, 사용자 신원인증 요청을 받아서 데이터베이스 검색하여 신원인증, 티켓발급
+ * TGT(Ticket Granting Ticket) : 티켓을 부여하는 티켓, 여권, clientId, 네트워크 주소, 티켓 유효기간, client/TGS간 세션키
+ * SGT(Service Granting Ticket) : TGT 를 보고 서비스 단위로 발급하는 티켓, 유효기간 짧음, 비자
+ * principal : 주체. 클라이언트 식별할 수 있는 고유ID. 사용자, 서비스 가 모두 가능, kerberos database 에 저장.관리
+ 
+    - 표기법 : 주체(primary) / 인스턴스(instance, 서비스 주체이면 필수, 사용자 주체이면 선택) @kerberos영역(realm) 
+        > joe
+        >
+        > joe/admin (사용자 joe가 가끔 시스템 관리자 역할을 수행하는 경우, joe와는 다름 )
+        >
+        > joe/admin@ENG.EXAMPLE.COM 
+        >
+        > nfs/host.eng.example.com@ENG.EXAMPLE.COM (서비스 nfs가 실행되는 호스트 이름 host.eng.example.com)
+        >
+        > host/eng.example.com@ENG.EXAMPLE.COM
+
+* Keytab : Key Table, kerberos 사용자정보와 암호화된 key 정보가 저장된 파일. (FILE, MEMORY) 
+모든 kerberos server는  KDC 인증을 위해서 keytab 파일이 필요하다.
+예를들어, trillium.mit.edu 서버에서 host, ftp, pop 서비스에대해 keytab을 만들어야한다.
+
+    ```Shell
+    trillium% kadmin
+    Authenticating as principal root/admin@ATHENA.MIT.EDU with password.
+    Password for root/admin@ATHENA.MIT.EDU:
+    kadmin: ktadd host/trillium.mit.edu ftp/trillium.mit.edu pop/trillium.mit.edu
+    Entry for principal host/trillium.mit.edu@ATHENA.MIT.EDU with kvno 3, encryption type aes256-cts-hmac-sha384-192 added to keytab FILE:/etc/krb5.keytab.
+    kadmin: Entry for principal ftp/trillium.mit.edu@ATHENA.MIT.EDU with kvno 3, encryption type aes256-cts-hmac-sha384-192 added to keytab FILE:/etc/krb5.keytab.
+    kadmin: Entry for principal pop/trillium.mit.edu@ATHENA.MIT.EDU with kvno 3, encryption type aes256-cts-hmac-sha384-192 added to keytab FILE:/etc/krb5.keytab.
+    kadmin: quit
+    trillium%
+
+    ```
+  
+* Kerberos realm : kerberos 영역, 도메인과 유사한 개념. 하나의 KDC에서 관리하는 논리적인 영역
+* 티켓 : 사용자 또는 서비스를 식별하고 인증된 시간 한정적 정보 개체(사용자 신원, 네트워크 엑세스 권한)
+* Credential Cache : kerberos 인증을 유효한 동안 저장하고 서비스 인증에 반복적으로 사용가능하게 함. 매번 KDC에 접속할 필요없음.
+
+### Flow
+![kerberos_protocol](/images/kerberos_protocol.png)
+
+#### Client Authentication
+1. client(C)가 AS로 서비스를 요청하는 사용자ID 를 보낸다.
+1. AS는 사용자 Database(Active Directory)를 체크하고 사용자의 패스워드를 이용해서 비밀키를 만든어 client에 보낸다. 
+    * Msg A : Cliient 비밀키로 암호화한 client/TGS 간 세션키
+    * Msg B : TGS의 비밀키로 암호화한 TGT
+
+1. client는 자신의 비밀키를 알고 있기 때문에 Msg A를 복호화 할 수 있다.
+
+#### Client Service Authorization
+1. 서비스에대한 권한을 요청할 때 client는 TGS에 다음 메시지를 보낸다.
+    * Msg C : Msg B + 요청하는 서비스 ID
+    * Mgs D : client/TGS 세션키로 암호화한 Authenticator(client id + timestamp)
+2. TGS는 Msg C -> TGS's 비밀키(Msg B) -> (세션키, client id, validity) 복호화
+3. 세션키(Msg D) 복호화해서 Authenticator의 client id가 Msg B의 client id 가 일치하는지 확인
+4. 응답메시지를 client 로 보낸다
+    *  Msg E : service 의 비밀키(Ks) 로 암호화한 client-to-server ticket
+    *  Msg F : client/TGS 세션키로 암호화한 client/server 세션키
+
+#### Client Service Request
+1.  client는 서비스 서버(SS) 다음 2개의 메시지를 보내 서비스를 요청한다.
+    * Msg E : 위에서 받은 client-to-server ticket
+    * Msg G : client/server 세션키로 암호화한 Authenticator(client Id + timestamp)
+2. Service Server는 Msg E를 복호화해서 client/server 세션키를 추출하고, client/server세션키로 Msg G를 복호화해서 Authenticator를 구한후 Msg E 와 Msg G를 비교한다.
+   값이 일치하면 다음 메시지를 응답한다.
+   * Msg H : Msg G에서 추출한 timestamp값을 client/server 세션키로 암호화
+3. client는 Msg H를 검증해서 일치하면 server를 신뢰하고 서비스를 시작한다.
+
+
+### Client 사용자
+kinit 명령어로 TGT발급받는다. TGT default cache에 저장된다. 기간이 만료되면 재발급받는다.
+1. kinit 으로 initial ticket을 받는다
+    * 비밀번호를 직접 입력
+
+    ```Shell
+    shell% kinit
+    Password for jennifer@ATHENA.MIT.EDU: <-- [Type jennifer's password here.]
+    shell%
+    ```
+    * keytab을 이용
+  
+    ```Shell
+    shell% kinit -k -t jeniffer.keytab
+    Password for jennifer@ATHENA.MIT.EDU: <-- [Type jennifer's password here.]
+    shell%
+    ```
+2. ticket 발급 현황 조회
+  
+    ```Shell
+    shell% klist
+    Ticket cache: /tmp/krb5cc_ttypa
+    Default principal: jennifer@ATHENA.MIT.EDU
+
+    Valid starting     Expires            Service principal
+    06/07/04 19:49:21  06/08/04 05:49:19  krbtgt/ATHENA.MIT.EDU@ATHENA.MIT.EDU
+    06/07/04 20:22:30  06/08/04 05:49:19  host/daffodil.mit.edu@ATHENA.MIT.EDU <- daffodil.mit.edu에 접속후 생성된 서비스 ticket
+    shell%
+    ```
+
+
+
+### 한계점
+* 엄격한 시간 기준 적용된다. 관련 노드간 시간 동기화가 필수적이다(최대 5분)
+* administration protocol이 표준화되지 않아서 적용제품마다 다르다.
+* KDC가 단일장애점(SPOF)이 될수 있다.

@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "배포환경에 따른 resource 관리"
-categories: maven jenkins
+categories: CI
+tags: [maven, jenkins]
 ---
 개발, 테스트, 운영등 배포 환경에 따라 설정이나 resource 가 달라져야 할때는 maven의 profile을 이용해서 
 각 환경별 설정파일을 생성하고 maven build시 해당 환경에 맞는 resource로 overwrite한다.

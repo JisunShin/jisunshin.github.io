@@ -2,6 +2,7 @@
 layout: post
 title:  "Jenkins로 Tomcat8 Deploy 하기"
 categories: CI
+tags: [jenkins, deploy]
 ---
 
 # 환경

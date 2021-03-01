@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "Oracle Session 관리용 Query"
-categories: db oracle
+categories: DB
+tags: [lock, session, slow, unlock, oracle]
 ---
 
 #### Session 현황

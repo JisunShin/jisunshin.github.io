@@ -1,7 +1,8 @@
 ---
 layout: post
-title:  "jemeter를 이용한 성능테스트"
-categories: jmeter
+title:  "jmeter를 이용한 성능테스트"
+categories: Test
+tags: [jmeter]
 ---
 jmeter를 이용해서 application의 성능테스트를 수행한다.
 [Jmeter  공식페이지][jemeter 공식] 를 참조한다.

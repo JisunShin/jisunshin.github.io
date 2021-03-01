@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "SCM 공급망관리"
-category: business
+categories: Business
 tags: [scm, bullwhip]
 ---
 

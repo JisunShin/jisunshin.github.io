@@ -2,7 +2,8 @@
 layout: post
 title:  "Telegram bot 으로 알림메시지 보내기"
 date:   2017-2-23
-categories: Telegram bot
+categories: Util
+tags: [Telegram, bot]
 ---
 서비스에서 사용자에게 알림메시지를 발송해야하는경우 기존에는 문자메시지를 많이 이용하였으나 비용등의 문제로 구축의 문제가 생긴다.
 telegram을 이용하면 무료로 알림을 보낼수 있고 메시지 수신기능을 이용하면 더욱 발전된 서비스도 가능하다.

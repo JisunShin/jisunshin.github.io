@@ -1,8 +1,8 @@
 ---
 layout: post
 title:  "DBCP2 evictor 설정"
-category: dbcp
-tags: [apache, commons]
+categories: DB
+tags: [apache, commons, dbcp]
 ---
 network 설정등에 따라 일정시간이 지나면 connection 이 끊어지는 경우 주기적으로 idle  상태의 db connection pool 에 대한 정리가 필요하다.
 

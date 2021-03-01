@@ -1,8 +1,8 @@
 ---
 layout: post
 title:  "spring에서 Resource Versioning하기"
-category: 개발팁
-tags: [static, resource, cache, spring]
+category: CI
+tags: [static, resource, cache, spring, version]
 ---
 js파일과 같은 static resource는 cache를 적용하는 것이 유리하다.
 Cache-Control: max-age=31536000‬

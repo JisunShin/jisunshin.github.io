@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "jasypt 을 이용한  property 암호화"
-categories: spring  암호화
+categories: Util
+tags: [spring,  암호화, property, jasypt]
 ---
 property 파일에  저장된  DB암호 등을 평문으로 노출하지 않고 암호화하여 저장, 사용시 복호화 하기위한 기능
 

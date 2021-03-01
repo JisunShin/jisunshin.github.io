@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "log4jdbc를 이용한 SQL Debugging "
-categories: JDBC, Debugging, SQL
+categories: DB
+tags: [JDBC, Debugging, SQL, log4jdbc]
 ---
 개발시 SQL 을 쉽게 debugging 하기위해 DriverSpy 를 사용한다.  
 JDBC driver를 DriverSpy 로 설정하고 실제 사용하는  DB종류에 따라 JDBC URL 을 설정한다.
